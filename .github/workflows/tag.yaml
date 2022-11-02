@@ -5,7 +5,7 @@ on:
   push:
     branches:
     - main
-  # Refresh images on the first of every month to update OS dependencies.
+  # Refresh images on the first of every month for OS security updates.
   schedule:
   - cron: '0 0 1 * *'
 
