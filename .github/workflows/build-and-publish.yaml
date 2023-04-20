@@ -17,6 +17,7 @@ jobs:
       matrix:
         image:
         - gha-s3-pg-helper
+        - gha-azure-helper
     steps:
     - name: Checkout
       uses: actions/checkout@v3
