@@ -2,7 +2,7 @@
 #
 # A small utility container to restore a db from an s3 backup.
 
-FROM ubuntu:22.04
+FROM ubuntu:jammy-20240125
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
