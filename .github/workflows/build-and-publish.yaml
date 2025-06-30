@@ -25,7 +25,7 @@ jobs:
     - name: Docker
       uses: mobilecoinofficial/gh-actions/docker@v0
       with:
-        dockerfile: .internal-ci/docker/Dockerfile.${{ matrix.image }}
+        dockerfile: ${{ matrix.image }}/Dockerfile
         flavor: latest=true
         images: ${{ env.DOCKER_ORG }}/${{ matrix.image }}
         push: ${{ github.event_name == 'pull_request' && 'false' || 'true' }}
