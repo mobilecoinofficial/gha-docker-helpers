@@ -12,7 +12,7 @@ env:
 
 jobs:
   docker:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         image:
@@ -20,33 +20,20 @@ jobs:
         - gha-azure-helper
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: mobilecoinofficial/gh-actions/checkout@v0
 
-    - name: Generate Docker Tags
-      id: meta
-      uses: docker/metadata-action@v4
+    - name: Docker
+      uses: mobilecoinofficial/gh-actions/docker@v0
       with:
+        dockerfile: ${{ matrix.image }}/Dockerfile
+        flavor: latest=true
         images: ${{ env.DOCKER_ORG }}/${{ matrix.image }}
+        push: ${{ github.event_name == 'pull_request' && 'false' || 'true' }}
         tags: |
           type=ref,event=pr,priority=30
           type=semver,pattern=v{{major}},priority=22
           type=semver,pattern=v{{major}}.{{minor}},priority=21
           type=semver,pattern=v{{version}},priority=20
           type=sha,priority=10
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Login to DockerHub
-      uses: docker/login-action@v2
-      with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-    - name: Build and Publish to DockerHub
-      uses: docker/build-push-action@v3
-      with:
-        context: ./${{ matrix.image }}/
-        # Don't push on pull_request, just build and check for errors
-        push: ${{ github.event_name == 'pull_request' && 'false' || 'true' }}
-        tags: ${{ steps.meta.outputs.tags }}
