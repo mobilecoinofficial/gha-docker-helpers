@@ -1,0 +1,32 @@
+image:
+  repository: mobilecoin/gha-s3-pg-helper
+  tag: ""
+
+imagePullSecrets: []
+# - name: myRegistryKeySecret
+nameOverride: ""
+fullnameOverride: ""
+
+configMap:
+  data:
+    entrypoint.sh: |-
+      #!/bin/bash
+      # Copy sql from S3
+      aws s3 cp --only-show-errors \
+        "s3://${BUCKET}/prebuilt/${VERSION}/sql/fog_recovery.sql" \
+        /tmp/fog_recovery.sql
+
+      # Restore to PG
+      psql < /tmp/fog_recovery.sql
+
+secret:
+  data:
+    # AWS_ACCESS_KEY_ID:
+    # AWS_SECRET_ACCESS_KEY:
+    # AWS_DEFAULT_REGION:
+    # BUCKET:
+    # PGDATABASE:
+    # PGHOST:
+    # PGPASSWORD:
+    # PGUSER:
+    # VERSION:

@@ -1,5 +1,5 @@
 # Copyright (c) 2023 MobileCoin Inc.
-name: build-and-publish
+name: build-and-publish-docker
 
 on:
   push:
@@ -37,3 +37,5 @@ jobs:
           type=sha,priority=10
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+
