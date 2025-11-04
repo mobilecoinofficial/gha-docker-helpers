@@ -25,7 +25,7 @@ jobs:
       uses: mobilecoinofficial/gha-k8s-toolbox@v1
       with:
         action: helm-publish-oci
-        chart_path: charts/{{ matrix.image }}
+        chart_path: charts/${{ matrix.image }}
         chart_version: ${{ github.ref_name }}
         chart_app_version: ${{ github.ref_name }}
         chart_repo: ghcr.io/mobilecoinofficial/charts
