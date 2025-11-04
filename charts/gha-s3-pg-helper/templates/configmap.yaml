@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gha-s3-pg-helper.fullname" . }}
+  labels:
+    {{- include "gha-s3-pg-helper.labels" . | nindent 4 }}
+data:
+  {{- toYaml .Values.configMap.data | nindent 2 }}

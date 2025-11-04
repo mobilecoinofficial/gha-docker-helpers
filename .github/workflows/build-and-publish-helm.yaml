@@ -1,0 +1,33 @@
+# Copyright (c) 2023 MobileCoin Inc.
+name: build-and-publish-helm
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image:
+        - gha-s3-pg-helper
+    steps:
+    - name: Checkout
+      uses: mobilecoinofficial/gh-actions/checkout@v0
+
+    - name: Package and Publish Chart (OCI)
+      uses: mobilecoinofficial/gha-k8s-toolbox@v1
+      with:
+        action: helm-publish-oci
+        chart_path: charts/{{ matrix.image }}
+        chart_version: ${{ github.ref_name }}
+        chart_app_version: ${{ github.ref_name }}
+        chart_repo: ghcr.io/mobilecoinofficial/charts
+        chart_repo_password: ${{ github.token }}
+        chart_repo_username: ${{ github.actor }}

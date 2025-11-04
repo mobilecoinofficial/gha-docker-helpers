@@ -1,0 +1,6 @@
+apiVersion: v2
+name: gha-s3-pg-helper
+description: restore a postgres db from an s3 backup
+type: application
+version: 0.0.0
+appVersion: "0.0.0"

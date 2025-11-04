@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "gha-s3-pg-helper.fullname" . }}
+  labels:
+    {{- include "gha-s3-pg-helper.labels" . | nindent 4 }}
+    app: gha-s3-pg-helper
+spec:
+  template:
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml .Values.imagePullSecrets | nindent 6 }}
+      {{- end }}
+      securityContext:
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+        runAsUser: 1000
+      containers:
+      - name: gha-s3-pg-helper
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: Always
+        command:
+        - /usr/bin/entrypoint.sh
+        envFrom:
+        - secretRef:
+            name: {{ include "gha-s3-pg-helper.fullname" . }}
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: entrypoint
+          mountPath: /usr/bin/entrypoint.sh
+          readOnly: true
+          subPath: entrypoint.sh
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: entrypoint
+        configMap:
+          defaultMode: 0755
+          name: {{ include "gha-s3-pg-helper.fullname" . }}
+      restartPolicy: Never
+  backoffLimit: 0

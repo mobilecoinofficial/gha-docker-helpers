@@ -31,11 +31,18 @@ jobs:
     - name: Lint GitHub Actions
       uses: mobilecoinofficial/gh-actions/lint-actions@v0
 
+  lint-helm:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Lint Helm Charts
+      uses: mobilecoinofficial/gh-actions/lint-helm@v0
+
   workflow-ok:
     needs:
     - lint-docker
     - lint-shell
     - lint-actions
+    - lint-helm
     runs-on: ubuntu-latest
     steps:
     - name: All Checks OK!
