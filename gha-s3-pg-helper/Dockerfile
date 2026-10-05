@@ -2,7 +2,7 @@
 #
 # A small utility container to restore a db from an s3 backup.
 
-FROM ubuntu:noble-20251001
+FROM ubuntu:noble-20260917
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
